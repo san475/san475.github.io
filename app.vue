@@ -15,6 +15,7 @@ onMounted(() => setInterval(() => {
     <div class="center">
       <h1>Francisco Website test</h1>
       <h2> time here: {{ counter.count }}</h2>
+      <h3>Change test</h3>
     </div>
   </div>
 </template>
