@@ -33,7 +33,7 @@ jobs:
       - name: list dir
         run: "ls ./"
       - name: list dir dist
-        run: "ls ./website/dist/"
+        run: "ls ./website/"
       - name: copy static files
         run: "cp -r './website/dist/'* ./"
       - name: list dir
