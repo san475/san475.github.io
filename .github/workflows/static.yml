@@ -34,6 +34,8 @@ jobs:
         run: "ls ./website"
       - name: copy static files
         run: "cp -r ./website/dist ./"
+      - name: list dir
+        run: "ls ./website"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
