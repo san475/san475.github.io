@@ -33,13 +33,13 @@ jobs:
       - name: list dir
         run: "ls ./"
       - name: copy static files
-        run: "cp -r ./website/dist/* ./"
+        run: "cp -r './website/dist/'* ./"
       - name: list dir
         run: "ls ./"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: './'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
