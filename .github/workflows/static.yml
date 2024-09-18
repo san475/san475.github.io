@@ -33,7 +33,7 @@ jobs:
       - name: list dir
         run: "ls ./"
       - name: copy static files
-        run: "cp -r ./website/dist ./"
+        run: "cp -r ./website/dist/* ./"
       - name: list dir
         run: "ls ./"
       - name: Upload artifact
