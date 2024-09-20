@@ -1,6 +1,6 @@
 <script setup>
 
-import grid from './grid.vue';
+import Grid from './Grid.vue';
 
 import {reactive, onMounted} from 'vue'
 
@@ -20,7 +20,7 @@ onMounted(() => setInterval(() => {
     <div class="center">
       <h1>Francisco Website</h1>
       <h2> time here: {{ counter.count }} seconds</h2>
-    <grid/>
+    <Grid/>
     </div>
   </div>
 </template>
