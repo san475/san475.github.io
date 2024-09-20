@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 
+import Cell from './Cell.vue'
+
 const cellSize= ref('75px')
 
 const grid = ref([])
@@ -21,16 +23,16 @@ for (let i = 0; i < 10; i++) {
 <template>
   <div class="container">
     <div class="row" v-for="row in grid">
-      <div class="cell" v-for="tile in row">
-      </div>
+      <Cell :cellSize="cellSize" v-for="tile in row"/>
     </div>
   </div>
 </template>
 
 <style>
 .container {
-  display: inline;
-
+  display: inline-block;
+  padding: 25px 25px 25px 25px;
+  background-color: darkgray;
 }
 
 .row {
@@ -38,11 +40,5 @@ for (let i = 0; i < 10; i++) {
   display: flex;
 }
 
-.cell {
-  width: v-bind('cellSize');
-  height: v-bind('cellSize');
-  margin: 1px;
-  background-color: darkslategray;
-  display: flex;
-}
+
 </style>
