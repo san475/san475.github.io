@@ -6,9 +6,7 @@ import {reactive, onMounted} from 'vue'
 
 const counter = reactive({count: 0});
 const now = new Date();
-
 onMounted(() => setInterval(() => {
-  console.log('test', counter)
   const then = new Date();
   counter.count =  (then - now )/ 1000
 }, 10))
@@ -28,7 +26,6 @@ onMounted(() => setInterval(() => {
 <style>
 body {
   background-color: black;
-
 }
 
 .center {

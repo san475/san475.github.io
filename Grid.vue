@@ -1,20 +1,48 @@
 <script setup>
-import { ref } from 'vue'
+import { reactive, ref, toRaw } from 'vue'
 
 import Cell from './Cell.vue'
 
-const cellSize= ref('75px')
+const cellSize = ref('75px')
 
-const grid = ref([])
-const templateRow = ref([])
+const setupGrid = () => {
 
-for (let i = 0; i < 10; i++) {
-  templateRow.value.push(0)
+  let key = 1;
 
+  const grid = reactive({ array: [] })
+  let templateRow = []
+
+  for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
+      templateRow.push({ key: key++, value: 0, backColor: 'darkslategray' })
+    }
+    grid.array.push(templateRow)
+    templateRow = []
+  }
+
+  //console.log('grid: ', grid)
+  return grid;
 }
-console.log(templateRow)
-for (let i = 0; i < 10; i++) {
-  grid.value.push(templateRow.value)
+
+let grid = ref([]);
+grid.value = setupGrid()
+
+const receiveEmit = (event) => {
+  const keyToX = (key) => {
+    return Math.floor(key / 10)
+  }
+  const keyToY = (key) => {
+    return key % 10 - 1
+  }
+  /*
+  console.log('TEST')
+  console.log(event)
+  console.log(keyToX(event), keyToY(event))
+  console.log(grid.value.array[keyToX(event)][keyToY(event)])
+  */
+
+  grid.value.array[keyToX(event)][keyToY(event)].backColor = 'slategray'
+
 }
 
 
@@ -22,9 +50,11 @@ for (let i = 0; i < 10; i++) {
 
 <template>
   <div class="container">
-    <div class="row" v-for="row in grid">
-      <Cell :cellSize="cellSize" v-for="tile in row"/>
+    <div v-for="row in grid.array" class="row">
+      <Cell v-for="tile in row" :cellKey="tile.key" :cellSize="cellSize" :backColor="tile.backColor"
+        @cellClick="receiveEmit" />
     </div>
+    <button @click="grid = setupGrid()">clear</button>
   </div>
 </template>
 
@@ -39,6 +69,4 @@ for (let i = 0; i < 10; i++) {
   width: 100%;
   display: flex;
 }
-
-
 </style>
