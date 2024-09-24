@@ -6,7 +6,7 @@ const counter = reactive({ count: 0 });
 const now = new Date();
 onMounted(() => setInterval(() => {
   const then = new Date();
-  counter.count = (then - now) / 1000
+  counter.count = Math.floor((then - now) / 1000)
 }, 10))
 
 </script>

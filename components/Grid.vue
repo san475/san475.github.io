@@ -28,20 +28,20 @@ let grid = ref([]);
 grid.value = setupGrid()
 
 const receiveEmit = (event) => {
-  const keyToX = (key) => {
-    return Math.floor(key / 10)
-  }
   const keyToY = (key) => {
-    return key % 10 - 1
+    return Math.floor((key - 1) / 10)
+  }
+  const keyToX = (key) => {
+    return (key - 1) % 10 
   }
   /*
+  */
   console.log('TEST')
   console.log(event)
   console.log(keyToX(event), keyToY(event))
   console.log(grid.value.array[keyToX(event)][keyToY(event)])
-  */
 
-  grid.value.array[keyToX(event)][keyToY(event)].backColor = 'slategray'
+  grid.value.array[keyToY(event)][keyToX(event)].backColor = 'slategray'
 
 }
 
