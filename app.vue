@@ -7,7 +7,6 @@
 </template>
 <style>
 html {
-  overflow: hidden;
 
   font-family: Arial, Helvetica, sans-serif;
 

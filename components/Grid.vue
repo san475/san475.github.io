@@ -1,19 +1,30 @@
 <script setup>
-import { reactive, ref, toRaw } from 'vue'
+import { reactive, ref } from 'vue'
 
 import Cell from './Cell.vue'
 
 const cellSize = ref('75px')
+const gridSize = ref(5);
+
+let mine = [1, 2];
+
+let message = ref("Find the mine?")
 
 const setupGrid = () => {
+
+  message.value = "Find the mine?";
+
+  mine = [Math.floor(Math.random() * gridSize.value), Math.floor(Math.random() * gridSize.value)]
+
+  console.log(mine)
 
   let key = 1;
 
   const grid = reactive({ array: [] })
   let templateRow = []
 
-  for (let i = 0; i < 10; i++) {
-    for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < gridSize.value; i++) {
+    for (let i = 0; i < gridSize.value; i++) {
       templateRow.push({ key: key++, value: 0, backColor: 'darkslategray' })
     }
     grid.array.push(templateRow)
@@ -29,10 +40,10 @@ grid.value = setupGrid()
 
 const receiveEmit = (event) => {
   const keyToY = (key) => {
-    return Math.floor((key - 1) / 10)
+    return Math.floor((key - 1) / gridSize.value)
   }
   const keyToX = (key) => {
-    return (key - 1) % 10 
+    return (key - 1) % gridSize.value
   }
   /*
   console.log('TEST')
@@ -41,8 +52,22 @@ const receiveEmit = (event) => {
   console.log(grid.value.array[keyToX(event)][keyToY(event)])
   */
 
-  grid.value.array[keyToY(event)][keyToX(event)].backColor = 'slategray'
+  const y = keyToY(event)
+  const x = keyToX(event)
 
+  if (y === mine[1] && x === mine[0])
+  {
+    grid.value.array[y][x].backColor = 'maroon'
+    message.value = "Wow!  1 in " + (gridSize.value ** 2)
+  }
+  else
+    grid.value.array[y][x].backColor = 'slategray'
+
+}
+
+const gridSizeButtonHandler = (amount) => {
+  gridSize.value += amount;
+  grid.value = setupGrid();
 }
 
 
@@ -54,8 +79,17 @@ const receiveEmit = (event) => {
       <Cell v-for="tile in row" :cellKey="tile.key" :cellSize="cellSize" :backColor="tile.backColor"
         @cellClick="receiveEmit" />
     </div>
-    <button @click="grid = setupGrid()">clear</button>
+    <div>
+      <button @click="grid = setupGrid()">Reset</button>
+      Grid Size:
+      <button @click="gridSizeButtonHandler(-1)">-</button>
+      {{ gridSize }}
+      <button @click="gridSizeButtonHandler(1)">+</button>
+    </div>
   </div>
+    <h2>
+      <div>{{ message }}</div>
+    </h2>
 </template>
 
 <style>
@@ -63,6 +97,14 @@ const receiveEmit = (event) => {
   display: inline-block;
   padding: 25px 25px 25px 25px;
   background-color: darkgray;
+}
+
+button {
+  background-color: black;
+  color: lightgray;
+  border: 0;
+  border-radius: 2px;
+  margin: 5px 2px;
 }
 
 .row {

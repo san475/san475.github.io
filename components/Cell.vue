@@ -6,14 +6,17 @@ const props = defineProps(['cellSize', 'cellKey', 'backColor'])
 
 <template>
   <div class="cell" @click="$emit('cellClick', props.cellKey)">
-    {{ props.cellKey }}
+    {{ }}
   </div>
 </template>
 
 <style>
 .cell {
+  color: lightgray;
   width: v-bind('props.cellSize');
   height: v-bind('props.cellSize');
+  width: 5vw;
+  height: 5vw;
   margin: 2px;
   background-color: v-bind("props.backColor");
   display: flex;
