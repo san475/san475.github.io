@@ -21,40 +21,4 @@ onMounted(() => setInterval(() => {
 </template>
 
 <style>
-html {
-  font-family: Arial, Helvetica, sans-serif;
-
-  margin: 0px 0px 0px 0px;
-  padding: 10px 20px 0px 20px;
-
-  height: calc(100% - 1em);
-  width: 100%;
-
-  /*
-  background: rgb(2,0,36);
-  background-color: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
-  background: white;
-  */
-  background: radial-gradient(circle at 100% 0%, #000000, transparent 100%), linear-gradient(65deg, #1e2d1c, rgb(18, 18, 18) 50%);
-
-
-}
-
-body {}
-
-.center {
-  background-color: white;
-  border-radius: 3px 3px 3px 3px;
-
-  padding: 10px 22px 22px 22px;
-  margin: auto;
-
-  width: 100%;
-  max-width: 1000px;
-
-}
-
-h1 {
-  color: gray;
-}
 </style>
