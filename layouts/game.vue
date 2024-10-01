@@ -6,7 +6,9 @@ import navbar from '~/components/navbar.vue';
 <template>
   <div class="center">
     <navbar />
+    <div class="content">
     <slot />
+    </div>
   </div>
 </template>
 

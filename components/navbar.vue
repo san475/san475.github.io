@@ -6,7 +6,7 @@
 <template>
   <nav>
     <NuxtLink to="/">Home</NuxtLink>
-    <NuxtLink to="/game">Game</NuxtLink>
+   <!-- <NuxtLink to="/game">Game</NuxtLink> -->
     <NuxtLink to="/grid">Grid</NuxtLink>
   </nav>
 </template>

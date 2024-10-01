@@ -8,15 +8,16 @@ const gridSize = ref(5);
 
 let mine = [1, 2];
 
+let mouseHeldDown = false;
+
 let message = ref("Find the mine?")
+
 
 const setupGrid = () => {
 
   message.value = "Find the mine?";
 
   mine = [Math.floor(Math.random() * gridSize.value), Math.floor(Math.random() * gridSize.value)]
-
-  console.log(mine)
 
   let key = 1;
 
@@ -38,32 +39,46 @@ const setupGrid = () => {
 let grid = ref([]);
 grid.value = setupGrid()
 
-const receiveEmit = (event) => {
+const cellActivationHandler = (event) => {
+
   const keyToY = (key) => {
     return Math.floor((key - 1) / gridSize.value)
   }
   const keyToX = (key) => {
     return (key - 1) % gridSize.value
   }
-  /*
-  console.log('TEST')
-  console.log(event)
-  console.log(keyToX(event), keyToY(event))
-  console.log(grid.value.array[keyToX(event)][keyToY(event)])
-  */
 
   const y = keyToY(event)
   const x = keyToX(event)
 
-  if (y === mine[1] && x === mine[0])
-  {
+  if (y === mine[1] && x === mine[0]) {
     grid.value.array[y][x].backColor = 'maroon'
     message.value = "Wow!  1 in " + (gridSize.value ** 2)
   }
   else
     grid.value.array[y][x].backColor = 'slategray'
-
 }
+
+const emittedHoverHandler = (event) => {
+  if (!mouseHeldDown)
+    return;
+
+  cellActivationHandler(event)
+}
+const emittedClickDownHandler = (event) => {
+  mouseHeldDown = true;
+  cellActivationHandler(event)
+}
+
+const mouseupHandler = (event) => {
+  mouseHeldDown = false;
+}
+onBeforeMount(() => {
+  window.addEventListener('mouseup', mouseupHandler)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('mouseup', mouseupHandler)
+})
 
 const gridSizeButtonHandler = (amount) => {
   gridSize.value += amount;
@@ -75,10 +90,9 @@ const gridSizeButtonHandler = (amount) => {
 
 <template>
   <div class="container">
-    <div v-for="row in grid.array" class="row">
-      <Cell v-for="tile in row" :cellKey="tile.key" :cellSize="cellSize" :backColor="tile.backColor"
-        @cellClick="receiveEmit" />
-    </div>
+    <h2>
+      <div>{{ message }}</div>
+    </h2>
     <div>
       <button @click="grid = setupGrid()">Reset</button>
       Grid Size:
@@ -86,15 +100,16 @@ const gridSizeButtonHandler = (amount) => {
       {{ gridSize }}
       <button @click="gridSizeButtonHandler(1)">+</button>
     </div>
+    <div v-for="row in grid.array" class="row">
+      <Cell v-for="tile in row" :cellKey="tile.key" :cellSize="cellSize" :backColor="tile.backColor"
+        @cellClickDown="emittedClickDownHandler" @cellHover="emittedHoverHandler" />
+    </div>
   </div>
-    <h2>
-      <div>{{ message }}</div>
-    </h2>
 </template>
 
 <style>
 .container {
-  display: inline-block;
+  width: fit-content;
   padding: 25px 25px 25px 25px;
   background-color: darkgray;
 }
@@ -110,5 +125,9 @@ button {
 .row {
   width: 100%;
   display: flex;
+}
+
+h2 {
+  margin: 5px 0px;
 }
 </style>

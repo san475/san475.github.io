@@ -5,7 +5,10 @@ const props = defineProps(['cellSize', 'cellKey', 'backColor'])
 </script>
 
 <template>
-  <div class="cell" @click="$emit('cellClick', props.cellKey)">
+  <div class="cell" 
+  @mousedown="$emit('cellClickDown', props.cellKey)" 
+  @mouseup="$emit('cellClickUp', props.cellKey)"
+  @mouseover="$emit('cellHover', props.cellKey)">
     {{ }}
   </div>
 </template>

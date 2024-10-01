@@ -14,11 +14,13 @@ onMounted(() => setInterval(() => {
 <template>
   <div class="center">
     <navbar />
-    <h1>Francisco Website</h1>
-    <h2> time here: {{ counter.count }} seconds</h2>
-    <slot />
+    <div class="content">
+
+      <h1>Francisco Website</h1>
+      <h2> time here: {{ counter.count }} seconds</h2>
+      <slot />
+    </div>
   </div>
 </template>
 
-<style>
-</style>
+<style></style>
