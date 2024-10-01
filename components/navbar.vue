@@ -34,12 +34,12 @@ a{
   font-size: 25px;
   color: inherit;
   text-decoration: none;
+  transition: all .11s ease-in-out;
 }
 
 
 a:hover {
   color: black;
-  transition: all .11s ease-in;
 }
 a.router-link-active {
  color: #333333

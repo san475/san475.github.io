@@ -24,10 +24,11 @@ const props = defineProps(['cellSize', 'cellKey', 'backColor'])
   background-color: v-bind("props.backColor");
   display: flex;
   border-radius: 3px;
+
+  transition: all .1s ease-in-out;
 }
 
 .cell:hover {
-  background-color: white;
-  transition: all .04s ease-in;
+  background-color: color-mix(in HSL, v-bind("props.backColor") 80%, rgb(255, 255, 255));
 }
 </style>

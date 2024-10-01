@@ -93,12 +93,16 @@ const gridSizeButtonHandler = (amount) => {
     <h2>
       <div>{{ message }}</div>
     </h2>
-    <div>
-      <button @click="grid = setupGrid()">Reset</button>
-      Grid Size:
-      <button @click="gridSizeButtonHandler(-1)">-</button>
-      {{ gridSize }}
-      <button @click="gridSizeButtonHandler(1)">+</button>
+    <div class="button-container">
+      <span>
+        <button @click="grid = setupGrid()">Reset</button>
+      </span>
+      <span>
+        Grid Size:
+        <button @click="gridSizeButtonHandler(-1)">-</button>
+        {{ gridSize }}
+        <button @click="gridSizeButtonHandler(1)">+</button>
+      </span>
     </div>
     <div v-for="row in grid.array" class="row">
       <Cell v-for="tile in row" :cellKey="tile.key" :cellSize="cellSize" :backColor="tile.backColor"
@@ -112,6 +116,10 @@ const gridSizeButtonHandler = (amount) => {
   width: fit-content;
   padding: 25px 25px 25px 25px;
   background-color: darkgray;
+}
+.button-container {
+  width:100%;
+  margin: auto;
 }
 
 button {
