@@ -3,7 +3,7 @@ import { reactive, ref } from 'vue'
 
 import Cell from './Cell.vue'
 
-const cellSize = ref('75px')
+const cellSize = ref(75)
 const gridSize = ref(5);
 
 let mine = [1, 2];
@@ -85,6 +85,11 @@ const gridSizeButtonHandler = (amount) => {
   grid.value = setupGrid();
 }
 
+const cellSizeButtonHandler = (amount) => {
+  cellSize.value += amount;
+  grid.value = setupGrid();
+}
+
 
 </script>
 
@@ -103,9 +108,15 @@ const gridSizeButtonHandler = (amount) => {
         {{ gridSize }}
         <button @click="gridSizeButtonHandler(1)">+</button>
       </span>
+      <span>
+        Cell Size:
+        <button @click="cellSizeButtonHandler(-5)">-</button>
+        {{ cellSize }}
+        <button @click="cellSizeButtonHandler(5)">+</button>
+      </span>
     </div>
     <div v-for="row in grid.array" class="row">
-      <Cell v-for="tile in row" :cellKey="tile.key" :cellSize="cellSize" :backColor="tile.backColor"
+      <Cell v-for="tile in row" :cellKey="tile.key" :cellSize="cellSize + 'px'" :backColor="tile.backColor"
         @cellClickDown="emittedClickDownHandler" @cellHover="emittedHoverHandler" />
     </div>
   </div>

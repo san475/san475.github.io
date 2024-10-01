@@ -8,14 +8,12 @@ onMounted(() => setInterval(() => {
   const then = new Date();
   counter.count = Math.floor((then - now) / 1000)
 }, 10))
-
 </script>
 
 <template>
   <div class="center">
     <navbar />
     <div class="content">
-
       <h1>Francisco Website</h1>
       <h2> time here: {{ counter.count }} seconds</h2>
       <slot />
