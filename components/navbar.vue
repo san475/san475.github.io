@@ -17,7 +17,7 @@ nav {
   background-color: lightgray;
   color: seagreen;
   padding: 7px 0px 11px 22px;
-  border-radius: 3px 3px 0px 0px;
+  border-radius: 3px;
 
   display: grid;
   grid-row-end:span;

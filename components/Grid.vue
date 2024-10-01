@@ -35,11 +35,11 @@ const receiveEmit = (event) => {
     return (key - 1) % 10 
   }
   /*
-  */
   console.log('TEST')
   console.log(event)
   console.log(keyToX(event), keyToY(event))
   console.log(grid.value.array[keyToX(event)][keyToY(event)])
+  */
 
   grid.value.array[keyToY(event)][keyToX(event)].backColor = 'slategray'
 

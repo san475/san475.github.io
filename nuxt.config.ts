@@ -7,6 +7,5 @@ export default defineNuxtConfig({
   },
   nitro: {
     static: true
-  }
-
+  },
 })

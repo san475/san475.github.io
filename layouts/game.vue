@@ -1,21 +1,11 @@
 <script setup>
 import navbar from '~/components/navbar.vue';
-import { reactive, onMounted } from 'vue'
-
-const counter = reactive({ count: 0 });
-const now = new Date();
-onMounted(() => setInterval(() => {
-  const then = new Date();
-  counter.count = Math.floor((then - now) / 1000)
-}, 10))
 
 </script>
 
 <template>
   <div class="center">
     <navbar />
-    <h1>Francisco Website</h1>
-    <h2> time here: {{ counter.count }} seconds</h2>
     <slot />
   </div>
 </template>
@@ -29,18 +19,12 @@ html {
 
   height: calc(100% - 1em);
   width: 100%;
-
-  /*
-  background: rgb(2,0,36);
-  background-color: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
-  background: white;
-  */
   background: radial-gradient(circle at 100% 0%, #000000, transparent 100%), linear-gradient(65deg, #1e2d1c, rgb(18, 18, 18) 50%);
-
 
 }
 
-body {}
+body {
+}
 
 .center {
   background-color: white;
@@ -51,7 +35,6 @@ body {}
 
   width: 100%;
   max-width: 1000px;
-
 }
 
 h1 {
