@@ -1,5 +1,5 @@
 <script>
-preloadRouteComponents('/resume')
+onBeforeMount(() => { preloadRouteComponents('/resume') })
 </script>
 
 <template>

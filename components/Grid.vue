@@ -99,21 +99,21 @@ const cellSizeButtonHandler = (amount) => {
       <div>{{ message }}</div>
     </h2>
     <div class="button-container">
-      <span>
+      <div>
         <button @click="grid = setupGrid()">Reset</button>
-      </span>
-      <span>
+      </div>
+      <div>
         Grid Size:
         <button @click="gridSizeButtonHandler(-1)">-</button>
         {{ gridSize }}
         <button @click="gridSizeButtonHandler(1)">+</button>
-      </span>
-      <span>
+      </div>
+      <div>
         Cell Size:
         <button @click="cellSizeButtonHandler(-5)">-</button>
         {{ cellSize }}
         <button @click="cellSizeButtonHandler(5)">+</button>
-      </span>
+      </div>
     </div>
     <div v-for="row in grid.array" class="row">
       <Cell v-for="tile in row" :cellKey="tile.key" :cellSize="cellSize + 'px'" :backColor="tile.backColor"
