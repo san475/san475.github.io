@@ -14,8 +14,8 @@ onMounted(() => setInterval(() => {
   <div class="center">
     <navbar />
     <div class="content">
-      <h1>Francisco Website</h1>
-      <h2> time here: {{ counter.count }} seconds</h2>
+      <h1>Francisco Esteve</h1>
+      <h2> Your time here: {{ counter.count }} seconds</h2>
       <slot />
     </div>
   </div>

@@ -1,5 +1,9 @@
+<script>
+preloadRouteComponents('/resume')
+</script>
+
 <template>
-  <NuxtLoadingIndicator  :throttle="0" :height="3" class="bg-orange" />
+  <NuxtLoadingIndicator :throttle="0" :height="3" class="bg-orange" />
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
@@ -18,9 +22,6 @@ html {
   background: radial-gradient(circle at 100% 0%, #000000, transparent 100%), linear-gradient(65deg, #1e2d1c, rgb(18, 18, 18) 50%);
 }
 
-body {
-}
-
 .center {
   background-color: white;
   border-radius: 3px 3px 3px 3px;
@@ -30,8 +31,8 @@ body {
   max-width: 1000px;
 
 }
-.content
-{
+
+.content {
   padding: 10px 22px 22px 22px;
 }
 
