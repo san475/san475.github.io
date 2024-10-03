@@ -7,7 +7,6 @@
 </template>
 
 <style>
-
 h3 {
     color: #222222;
 }

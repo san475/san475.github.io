@@ -58,7 +58,6 @@ const cellActivationHandler = (event) => {
   else
     grid.value.array[y][x].backColor = 'slategray'
 }
-
 const emittedHoverHandler = (event) => {
   if (!mouseHeldDown)
     return;
@@ -69,10 +68,10 @@ const emittedClickDownHandler = (event) => {
   mouseHeldDown = true;
   cellActivationHandler(event)
 }
-
 const mouseupHandler = (event) => {
   mouseHeldDown = false;
 }
+
 onBeforeMount(() => {
   window.addEventListener('mouseup', mouseupHandler)
 })
@@ -89,8 +88,6 @@ const cellSizeButtonHandler = (amount) => {
   cellSize.value += amount;
   grid.value = setupGrid();
 }
-
-
 </script>
 
 <template>
@@ -128,8 +125,9 @@ const cellSizeButtonHandler = (amount) => {
   padding: 25px 25px 25px 25px;
   background-color: darkgray;
 }
+
 .button-container {
-  width:100%;
+  width: 100%;
   margin: auto;
 }
 
