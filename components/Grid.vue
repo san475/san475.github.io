@@ -6,6 +6,70 @@ import Cell from './Cell.vue'
 const cellSize = ref(75)
 const gridSize = ref(5);
 
+let pg_interval;
+onBeforeMount(() => {
+  window.addEventListener('mouseup', mouseupHandler)
+  pg_interval = setInterval(processGravity, 500)
+
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('mouseup', mouseupHandler)
+  clearInterval(pg_interval)
+})
+
+const keyToY = (key) => {
+  return Math.floor((key - 1) / gridSize.value)
+}
+const keyToX = (key) => {
+  return (key - 1) % gridSize.value
+}
+
+
+const getCellFromKey = (grid, key) => {
+  const keyToY = (key) => {
+    return Math.floor((key - 1) / gridSize.value)
+  }
+  const keyToX = (key) => {
+    return (key - 1) % gridSize.value
+  }
+
+  let x = keyToX(key)
+  let y = keyToY(key)
+
+  return grid.value.array[y][x]
+}
+
+let gravity = ref(false)
+const toggleGravity = () => { gravity.value = !gravity.value }
+const processGravity = () => {
+  if (!gravity.value)
+    return;
+
+  const toBeDisabled = []
+  const toBeEnabled = []
+  for (const row of grid.value.array) {
+    for (const cell of row) {
+      if (cell.backColor === 'slategray') {
+        toBeDisabled.push(cell)
+        if (cell.key + gridSize.value <= gridSize.value ** 2) {
+          let new_cell = getCellFromKey(grid, cell.key + gridSize.value)
+          toBeEnabled.push(new_cell)
+        }
+      }
+    }
+  }
+
+  for (const cell of toBeDisabled) {
+    cell.backColor = 'darkslategray'
+  }
+  for (const cell of toBeEnabled) {
+    if (cell.key <= gridSize.value ** 2)
+      cell.backColor = 'slategray'
+  }
+}
+
+
+
 let mine = [1, 2];
 
 let mouseHeldDown = false;
@@ -32,31 +96,26 @@ const setupGrid = () => {
     templateRow = []
   }
 
-  //console.log('grid: ', grid)
   return grid;
 }
 
 let grid = ref([]);
 grid.value = setupGrid()
 
-const cellActivationHandler = (event) => {
+const cellActivationHandler = (key) => {
 
-  const keyToY = (key) => {
-    return Math.floor((key - 1) / gridSize.value)
-  }
-  const keyToX = (key) => {
-    return (key - 1) % gridSize.value
-  }
+  let x = keyToX(key)
+  let y = keyToY(key)
 
-  const y = keyToY(event)
-  const x = keyToX(event)
+  let cell = getCellFromKey(grid, key);
 
   if (y === mine[1] && x === mine[0]) {
-    grid.value.array[y][x].backColor = 'maroon'
+    cell.backColor = 'maroon'
     message.value = "Wow!  1 in " + (gridSize.value ** 2)
   }
   else
-    grid.value.array[y][x].backColor = 'slategray'
+    cell.backColor = 'slategray'
+
 }
 const emittedHoverHandler = (event) => {
   if (!mouseHeldDown)
@@ -71,13 +130,6 @@ const emittedClickDownHandler = (event) => {
 const mouseupHandler = (event) => {
   mouseHeldDown = false;
 }
-
-onBeforeMount(() => {
-  window.addEventListener('mouseup', mouseupHandler)
-})
-onBeforeUnmount(() => {
-  window.removeEventListener('mouseup', mouseupHandler)
-})
 
 const gridSizeButtonHandler = (amount) => {
   gridSize.value += amount;
@@ -110,6 +162,12 @@ const cellSizeButtonHandler = (amount) => {
         <button @click="cellSizeButtonHandler(-5)">-</button>
         {{ cellSize }}
         <button @click="cellSizeButtonHandler(5)">+</button>
+      </div>
+      <div>
+        <button @click="toggleGravity">
+          <span v-if="gravity"> Gravity ON </span>
+          <span v-else> Gravity OFF </span>
+        </button>
       </div>
     </div>
     <div v-for="row in grid.array" class="row">
