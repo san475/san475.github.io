@@ -6,9 +6,9 @@
   <nav>
     <div>
       <NuxtLink to="/">Home</NuxtLink>
-      <!-- <NuxtLink to="/game">Game</NuxtLink> -->
       <NuxtLink to="/resume" prefetch>Resume</NuxtLink>
       <NuxtLink to="/grid">Grid</NuxtLink>
+      <NuxtLink to="/game">Game</NuxtLink>
   </div>
   </nav>
 </template>

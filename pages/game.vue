@@ -1,30 +1,28 @@
 <script setup>
+import wasm_bindgen from '@/rustlike';
 
-import * as rustlike from '/res/rustlike.js'
 
 definePageMeta({
   layout: false,
 });
-console.log('rustlike', rustlike)
 
-onBeforeMount(() => {
-  window.addEventListener("load", async () => {
-    await rustlike.wasm_bindgen("../res/rustlike_bg.wasm");
-  })
-});
-
-useHead({
-  script: [ rustlike ]
+onMounted(async () => {
+    await wasm_bindgen("/rustlike_bg.wasm");
 })
+
 </script>
 
 <template>
   <NuxtLayout name="game">
-    <canvas id="canvas" width="640" height="480"></canvas>
-
+    <body>
+      <canvas id="canvas" width="640" height="480"></canvas>
+    </body>
   </NuxtLayout>
 </template>
 
 
 <style>
+.center {
+}
+
 </style>
