@@ -6,8 +6,20 @@ definePageMeta({
   layout: false,
 });
 
+
+
 onMounted(async () => {
-    await wasm_bindgen("/rustlike_bg.wasm");
+  console.log(localStorage.getItem("dirty"))
+  await wasm_bindgen("/rustlike_bg.wasm");
+  if (localStorage.getItem("dirty") === 'true') {
+
+    localStorage.setItem("dirty", false);
+    location.reload()
+  }
+})
+
+onBeforeUnmount(() => {
+  localStorage.setItem("dirty", true);
 })
 
 </script>
@@ -22,7 +34,5 @@ onMounted(async () => {
 
 
 <style>
-.center {
-}
-
+.center {}
 </style>

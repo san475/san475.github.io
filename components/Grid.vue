@@ -3,8 +3,8 @@ import { reactive, ref } from 'vue'
 
 import Cell from './Cell.vue'
 
-const cellSize = ref(75)
-const gridSize = ref(5);
+const cellSize = ref(85)
+const gridSize = ref(10);
 
 let pg_interval;
 onBeforeMount(() => {
@@ -165,7 +165,7 @@ const cellSizeButtonHandler = (amount) => {
       </div>
       <div>
         <button @click="toggleGravity">
-          <span v-if="gravity"> Gravity ON </span>
+          <span v-if="!gravity"> Gravity ON </span>
           <span v-else> Gravity OFF </span>
         </button>
       </div>
