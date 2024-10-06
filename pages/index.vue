@@ -7,6 +7,7 @@
     <p>I have professional experience creating web applications in Typescript using the ReactJS framework. Looking to
         use my skills as a Full stack developer to solve real world problems and improve the lives of our fellow humans.
     </p>
+    <Map/>
 </template>
 
 <style>
