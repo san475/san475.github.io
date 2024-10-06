@@ -3,25 +3,20 @@ import { reactive, ref } from 'vue'
 
 import Cell from './Cell.vue'
 
-const cellSize = ref(85)
-const gridSize = ref(10);
+const cellSize = ref(75)
+const gridSize = ref(11);
 
-let pg_interval;
-onBeforeMount(() => {
-  window.addEventListener('mouseup', mouseupHandler)
-  pg_interval = setInterval(processGravity, 500)
-
-})
-onBeforeUnmount(() => {
-  window.removeEventListener('mouseup', mouseupHandler)
-  clearInterval(pg_interval)
-})
+let current_hue = 10
 
 const keyToY = (key) => {
   return Math.floor((key - 1) / gridSize.value)
 }
 const keyToX = (key) => {
   return (key - 1) % gridSize.value
+}
+
+const setBackColorHsl = (cell, hue) => {
+  cell.backColor = `hsl(${hue} 50% 50%)`
 }
 
 
@@ -39,7 +34,22 @@ const getCellFromKey = (grid, key) => {
   return grid.value.array[y][x]
 }
 
+let gravity_interval;
+onBeforeMount(() => {
+  window.addEventListener('mouseup', mouseupHandler)
+  gravity_interval = setInterval(processGravity, 500)
+
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('mouseup', mouseupHandler)
+  clearInterval(gravity_interval)
+})
+
+
 let gravity = ref(false)
+let party_mode = ref(false)
+
+const togglePartyMode = () => { party_mode.value = !party_mode.value }
 const toggleGravity = () => { gravity.value = !gravity.value }
 const processGravity = () => {
   if (!gravity.value)
@@ -49,7 +59,7 @@ const processGravity = () => {
   const toBeEnabled = []
   for (const row of grid.value.array) {
     for (const cell of row) {
-      if (cell.backColor === 'slategray') {
+      if (cell.active) {
         toBeDisabled.push(cell)
         if (cell.key + gridSize.value <= gridSize.value ** 2) {
           let new_cell = getCellFromKey(grid, cell.key + gridSize.value)
@@ -60,11 +70,19 @@ const processGravity = () => {
   }
 
   for (const cell of toBeDisabled) {
+    cell.active = false;
     cell.backColor = 'darkslategray'
   }
   for (const cell of toBeEnabled) {
-    if (cell.key <= gridSize.value ** 2)
-      cell.backColor = 'slategray'
+    if (cell.key <= gridSize.value ** 2) {
+      if (party_mode.value) {
+        setBackColorHsl(cell, current_hue)
+        current_hue += 2;
+      } else {
+        cell.backColor = 'slategray'
+      }
+    }
+    cell.active = true;
   }
 }
 
@@ -90,7 +108,12 @@ const setupGrid = () => {
 
   for (let i = 0; i < gridSize.value; i++) {
     for (let i = 0; i < gridSize.value; i++) {
-      templateRow.push({ key: key++, value: 0, backColor: 'darkslategray' })
+      templateRow.push({
+        key: key++,
+        value: 0,
+        backColor: 'darkslategray',
+        active: false
+      })
     }
     grid.array.push(templateRow)
     templateRow = []
@@ -113,8 +136,18 @@ const cellActivationHandler = (key) => {
     cell.backColor = 'maroon'
     message.value = "Wow!  1 in " + (gridSize.value ** 2)
   }
-  else
-    cell.backColor = 'slategray'
+  else {
+    console.log(current_hue)
+    if (party_mode.value) {
+      cell.backColor = `hsl(${current_hue} 30% 50%)`
+      setBackColorHsl(cell, current_hue)
+      current_hue += 2;
+    } else {
+
+      cell.backColor = 'slategray'
+    }
+  }
+  cell.active = true;
 
 }
 const emittedHoverHandler = (event) => {
@@ -165,8 +198,14 @@ const cellSizeButtonHandler = (amount) => {
       </div>
       <div>
         <button @click="toggleGravity">
-          <span v-if="!gravity"> Gravity ON </span>
-          <span v-else> Gravity OFF </span>
+          <span v-if="!gravity"> Turn Gravity On </span>
+          <span v-else> Turn Gravity Off </span>
+        </button>
+      </div>
+      <div>
+        <button @click="togglePartyMode">
+          <span v-if="!party_mode"> Turn Party Mode On </span>
+          <span v-else> Turn Party Mode Off </span>
         </button>
       </div>
     </div>

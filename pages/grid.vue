@@ -2,7 +2,6 @@
 
 import Grid from '../components/Grid.vue';
 
-
 </script>
 <template>
   <Grid />

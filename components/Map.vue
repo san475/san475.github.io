@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 /// <reference types="google.maps" />
 const { onLoaded } = useScriptGoogleMaps({
-  apiKey: 'AIzaSyBYJ33u8Z7wmP2sY4EpKrEmxjr-T8QzrrA'
+  //restricted apiKey: 'AIzaSyBYJ33u8Z7wmP2sY4EpKrEmxjr-T8QzrrA'
+  apiKey: 'AIzaSyDOufv6giH8BIvdHN185qV8wA5wOYdxcZ0'
 })
 
 const mapDiv = ref()
@@ -110,7 +111,6 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <h3>Make your mark.</h3>
   <div ref="mapDiv" class="map">
   </div>
 </template>

@@ -20,7 +20,13 @@ html {
   width: 100%;
   background: radial-gradient(circle at 100% 0%, #000000, transparent 100%), linear-gradient(65deg, #1e2d1c, rgb(18, 18, 18) 50%);
 
-  overflow-x: hidden;
+
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 
 .center {
