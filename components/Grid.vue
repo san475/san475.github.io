@@ -1,68 +1,56 @@
-<script setup>
+<script lang="ts" setup>
 import { reactive, ref } from 'vue'
-
+import { CellColor, keyToX, keyToY, getCellFromKey, setupGrid } from '~/utils/grid.ts';
 import Cell from './Cell.vue'
 
-const cellSize = ref(75)
-const gridSize = ref(11);
 
-let current_hue = 10
+const cellSize: Ref<number> = ref(75)
+const gridSize: Ref<number> = ref(11)
+const cellHue: Ref<number> = ref(0)
 
-const keyToY = (key) => {
-  return Math.floor((key - 1) / gridSize.value)
-}
-const keyToX = (key) => {
-  return (key - 1) % gridSize.value
-}
+let grid: Ref<GridObject> = ref(reactive({ array: [], mine: { x: 0, y: 0 }, message: "" }));
 
-const setBackColorHsl = (cell, hue) => {
-  cell.backColor = `hsl(${hue} 50% 50%)`
-}
+let gravity: Ref<boolean> = ref(false)
+let party_mode: Ref<boolean> = ref(false)
+
+let mouseHeldDown: boolean = false;
+
+let gravity_interval: NodeJS.Timeout;
+
+grid.value = setupGrid(gridSize.value);
 
 
-const getCellFromKey = (grid, key) => {
-  const keyToY = (key) => {
-    return Math.floor((key - 1) / gridSize.value)
-  }
-  const keyToX = (key) => {
-    return (key - 1) % gridSize.value
-  }
-
-  let x = keyToX(key)
-  let y = keyToY(key)
-
-  return grid.value.array[y][x]
-}
-
-let gravity_interval;
 onBeforeMount(() => {
   window.addEventListener('mouseup', mouseupHandler)
+  window.addEventListener('mousedown', mousedownHandler)
   gravity_interval = setInterval(processGravity, 500)
 
 })
 onBeforeUnmount(() => {
   window.removeEventListener('mouseup', mouseupHandler)
+  window.removeEventListener('mousedown', mousedownHandler)
   clearInterval(gravity_interval)
 })
 
 
-let gravity = ref(false)
-let party_mode = ref(false)
-
 const togglePartyMode = () => { party_mode.value = !party_mode.value }
 const toggleGravity = () => { gravity.value = !gravity.value }
+
+
 const processGravity = () => {
   if (!gravity.value)
     return;
 
-  const toBeDisabled = []
-  const toBeEnabled = []
+  const toBeDisabled: CellObject[] = []
+  const toBeEnabled: CellObject[] = []
+
   for (const row of grid.value.array) {
     for (const cell of row) {
       if (cell.active) {
         toBeDisabled.push(cell)
+
         if (cell.key + gridSize.value <= gridSize.value ** 2) {
-          let new_cell = getCellFromKey(grid, cell.key + gridSize.value)
+          let new_cell = getCellFromKey(grid.value, cell.key + gridSize.value, gridSize.value)
           toBeEnabled.push(new_cell)
         }
       }
@@ -71,118 +59,75 @@ const processGravity = () => {
 
   for (const cell of toBeDisabled) {
     cell.active = false;
-    cell.backColor = 'darkslategray'
+    cell.backColor = CellColor.disabled
   }
+
   for (const cell of toBeEnabled) {
     if (cell.key <= gridSize.value ** 2) {
-      if (party_mode.value) {
-        setBackColorHsl(cell, current_hue)
-        current_hue += 2;
-      } else {
-        cell.backColor = 'slategray'
-      }
+      setEnabledCellColor(cell, party_mode.value, cellHue)
+      cell.active = true;
     }
-    cell.active = true;
   }
 }
 
 
+const cellActivationHandler = (key: number, grid: GridObject, gridSize: Ref<number>) => {
 
-let mine = [1, 2];
+  let x = keyToX(key, gridSize.value)
+  let y = keyToY(key, gridSize.value)
 
-let mouseHeldDown = false;
+  let cell = getCellFromKey(grid, key, gridSize.value);
 
-let message = ref("Find the mine?")
-
-
-const setupGrid = () => {
-
-  message.value = "Find the mine?";
-
-  mine = [Math.floor(Math.random() * gridSize.value), Math.floor(Math.random() * gridSize.value)]
-
-  let key = 1;
-
-  const grid = reactive({ array: [] })
-  let templateRow = []
-
-  for (let i = 0; i < gridSize.value; i++) {
-    for (let i = 0; i < gridSize.value; i++) {
-      templateRow.push({
-        key: key++,
-        value: 0,
-        backColor: 'darkslategray',
-        active: false
-      })
-    }
-    grid.array.push(templateRow)
-    templateRow = []
-  }
-
-  return grid;
-}
-
-let grid = ref([]);
-grid.value = setupGrid()
-
-const cellActivationHandler = (key) => {
-
-  let x = keyToX(key)
-  let y = keyToY(key)
-
-  let cell = getCellFromKey(grid, key);
-
-  if (y === mine[1] && x === mine[0]) {
-    cell.backColor = 'maroon'
-    message.value = "Wow!  1 in " + (gridSize.value ** 2)
+  if (y === grid.mine.y && x === grid.mine.x) {
+    cell.backColor = CellColor.mine;
+    grid.message = "Wow!  1 in " + (gridSize.value ** 2)
   }
   else {
-    console.log(current_hue)
-    if (party_mode.value) {
-      cell.backColor = `hsl(${current_hue} 30% 50%)`
-      setBackColorHsl(cell, current_hue)
-      current_hue += 2;
-    } else {
-
-      cell.backColor = 'slategray'
-    }
+    setEnabledCellColor(cell, party_mode.value, cellHue);
   }
   cell.active = true;
-
 }
-const emittedHoverHandler = (event) => {
+
+
+const emittedHoverHandler = (key: number) => {
   if (!mouseHeldDown)
     return;
 
-  cellActivationHandler(event)
+  cellActivationHandler(key, grid.value, gridSize)
 }
-const emittedClickDownHandler = (event) => {
-  mouseHeldDown = true;
-  cellActivationHandler(event)
+
+
+const emittedClickDownHandler = (key: number) => {
+  cellActivationHandler(key, grid.value, gridSize)
 }
-const mouseupHandler = (event) => {
+
+
+const mouseupHandler = () => {
   mouseHeldDown = false;
 }
-
-const gridSizeButtonHandler = (amount) => {
-  gridSize.value += amount;
-  grid.value = setupGrid();
+const mousedownHandler = () => {
+  mouseHeldDown = true;
 }
 
-const cellSizeButtonHandler = (amount) => {
+
+const gridSizeButtonHandler = (amount: number) => {
+  gridSize.value += amount;
+  grid.value = setupGrid(gridSize.value);
+}
+const cellSizeButtonHandler = (amount: number) => {
   cellSize.value += amount;
-  grid.value = setupGrid();
+  grid.value = setupGrid(gridSize.value);
 }
 </script>
 
 <template>
   <div class="container">
     <h2>
-      <div>{{ message }}</div>
+      <div>{{ grid.message }}</div>
     </h2>
     <div class="button-container">
       <div>
-        <button @click="grid = setupGrid()">Reset</button>
+        <button @click="grid = setupGrid(gridSize)">Reset</button>
       </div>
       <div>
         Grid Size:
