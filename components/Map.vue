@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 /// <reference types="google.maps" />
 const { onLoaded } = useScriptGoogleMaps({
-  //restricted apiKey: 'AIzaSyBYJ33u8Z7wmP2sY4EpKrEmxjr-T8QzrrA'
-  apiKey: 'AIzaSyDOufv6giH8BIvdHN185qV8wA5wOYdxcZ0'
+  apiKey: 'AIzaSyBYJ33u8Z7wmP2sY4EpKrEmxjr-T8QzrrA'
 })
 
 const mapDiv = ref()
