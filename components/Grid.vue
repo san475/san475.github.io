@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { CellColor, keyToX, keyToY, getCellFromKey, setupGrid } from '~/utils/grid.ts';
+import { CellColor, keyToX, keyToY, getCellFromKey, setupGrid } from '~/utils/grid.js';
 import Cell from './Cell.vue'
 
 

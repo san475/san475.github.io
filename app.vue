@@ -2,6 +2,10 @@
 </script>
 
 <template>
+
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
   <NuxtLoadingIndicator :throttle="0" :height="3" class="bg-orange" />
   <NuxtLayout>
     <NuxtPage />
@@ -9,6 +13,18 @@
 
 </template>
 <style>
+:root {
+  font-family: Inter, sans-serif;
+  font-feature-settings: 'liga' 1, 'calt' 1;
+  /* fix for Chrome */
+}
+
+@supports (font-variation-settings: normal) {
+  :root {
+    font-family: InterVariable, sans-serif;
+  }
+}
+
 html {
 
   font-family: Arial, Helvetica, sans-serif;
@@ -19,14 +35,18 @@ html {
   height: calc(100% - 1em);
   width: 100%;
   background: radial-gradient(circle at 100% 0%, #000000, transparent 100%), linear-gradient(65deg, #1e2d1c, rgb(18, 18, 18) 50%);
+  background-attachment: fixed;
 
 
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 html::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+  display: none;
+  /* Safari and Chrome */
 }
 
 .center {
