@@ -26,8 +26,7 @@
 }
 
 html {
-
-  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
 
   margin: 0px 0px 0px 0px;
   padding: 10px 20px 0px 20px;
@@ -50,6 +49,7 @@ html::-webkit-scrollbar {
 }
 
 .center {
+
   background-color: white;
   border-radius: 3px 3px 3px 3px;
 
@@ -60,7 +60,7 @@ html::-webkit-scrollbar {
 }
 
 .content {
-  padding: 10px 22px 22px 22px;
+  padding: 0px 22px 22px 22px;
 }
 
 h1 {
