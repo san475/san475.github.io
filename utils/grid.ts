@@ -24,7 +24,7 @@ const getCellFromKey = (grid: GridObject, key: number, gridSize: number) => {
 const setEnabledCellColor = (cell: CellObject, party_mode: boolean, hue: Ref<number>) => {
 
   if (party_mode) {
-    cell.backColor = `hsl(${hue} 50% 50%)`
+    cell.backColor = `hsl(${hue.value} 50% 50%)`
     hue.value = (hue.value + 3) % 360;
   } else {
     cell.backColor = CellColor.enabled;

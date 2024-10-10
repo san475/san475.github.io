@@ -41,8 +41,6 @@ onMounted(() => {
       clickableIcons: false
     })
 
-    console.log(map);
-
     for (const marker_position of markers) {
       const position: google.maps.LatLng = new google.maps.LatLng({ lat: marker_position.lat, lng: marker_position.lng })
       const new_marker = new AdvancedMarkerElement({
@@ -82,7 +80,7 @@ onMounted(() => {
         markers.push({ lat: new_marker.position?.lat, lng: new_marker.position?.lng });
 
         new_marker.addListener("click", (event: any) => {
-          console.log('orig', JSON.stringify({ lat: Number(event.latLng.lat()).toFixed(3), lng: Number(event.latLng.lng()).toFixed(3) }))
+          //console.log('orig', JSON.stringify({ lat: Number(event.latLng.lat()).toFixed(3), lng: Number(event.latLng.lng()).toFixed(3) }))
           remove_marker(event, new_marker);
         })
 
